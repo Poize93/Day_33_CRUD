@@ -24,16 +24,17 @@ class CrudComponent extends React.Component {
   handleSubmit = (e) => {
     e.preventDefault();
     console.log(this.state);
-    var response = await axios.post(
-      'https://62152ebccdb9d09717b0e6f5.mockapi.io/users',
-      {
-        name: this.state.name,
-        age: this.state.age,
-        email: this.state.email,
-      }
-    );
-    console.log(response.data);
-  };
+    console.log("HIiii")
+    // var response = await axios.post(
+    //   'https://62152ebccdb9d09717b0e6f5.mockapi.io/users',
+    //   {
+    //     name: this.state.name,
+    //     age: this.state.age,
+    //     email: this.state.email,
+    //   }
+    // );
+  //   console.log(response.data);
+  // };
 
   render() {
     return (
@@ -78,7 +79,7 @@ class CrudComponent extends React.Component {
             <button type="submit" onSubmit={this.handleSubmit}>
               Submit
             </button>{' '}
-            &nbsp;
+            &nbsp;&nbsp;
             <button type="button">Reset</button>
           </div>
         </form>
