@@ -17,24 +17,39 @@ class CrudComponent extends React.Component {
       'https://62152ebccdb9d09717b0e6f5.mockapi.io/users'
     );
     await this.setState({ user: response.data });
-    console.log(response);
-    console.log(this.state.user);
+    // console.log(response);
+    // console.log(this.state.user);
   }
 
-  handleSubmit = (e) => {
-    console.log('HIiii');
+  handleReset = () => {
+    this.setState({
+      name: '',
+      age: '',
+      email: '',
+    });
+  };
+  handleSubmit = async (e) => {
     e.preventDefault();
     console.log(this.state);
+    var response = await axios.post(
+      'https://62152ebccdb9d09717b0e6f5.mockapi.io/users',
+      {
+        name: this.state.name,
+        age: this.state.age,
+        email: this.state.email,
+      }
+    );
+    var user = [...this.state.user];
+    user.push(response.data);
+    this.setState({ user, name: '', age: '', email: '' });
+    console.log(this.state.user);
+    this.handleReset;
+  };
 
-    // var response = await axios.post(
-    //   'https://62152ebccdb9d09717b0e6f5.mockapi.io/users',
-    //   {
-    //     name: this.state.name,
-    //     age: this.state.age,
-    //     email: this.state.email,
-    //   }
-    // );
-    //   console.log(response.data);
+  onPopulateData = (id) => {
+    var selectedData = this.state.user.filter((user) => use.id === id);
+    console.log(selectedData);
+    console.log(id);
   };
 
   render() {
@@ -42,7 +57,7 @@ class CrudComponent extends React.Component {
       <>
         <h3> Crud Component </h3>
         <h3>User Form</h3>
-        <form>
+        <form onSubmit={this.handleSubmit}>
           <div>
             <label>Name</label>
             <input
@@ -77,11 +92,10 @@ class CrudComponent extends React.Component {
           <br />
 
           <div>
-            <button type="submit" onSubmit={this.handleSubmit}>
-              Submit
-            </button>{' '}
-            &nbsp;&nbsp;
-            <button type="button">Reset</button>
+            <button type="submit">Submit</button> &nbsp;&nbsp;
+            <button type="button" onClick={this.handleReset}>
+              Reset
+            </button>
           </div>
         </form>
         <table border={1}>
@@ -102,7 +116,10 @@ class CrudComponent extends React.Component {
                 <td>{data.age}</td>
                 <td>{data.email}</td>
                 <td>
-                  <button>Update</button> <button>Delete</button>
+                  <button onSubmit={() => this.onPopulateData(data.id)}>
+                    Update
+                  </button>
+                  &nbsp; <button>Delete</button>
                 </td>
               </tr>
             ))}
