@@ -9,6 +9,7 @@ class CrudComponent extends React.Component {
       name: '',
       age: '',
       email: '',
+      id: '',
     };
   }
 
@@ -30,6 +31,31 @@ class CrudComponent extends React.Component {
   };
   handleSubmit = async (e) => {
     e.preventDefault();
+    if (this.state.id) {
+      // add operation
+      this.handleUpdate();
+    } else {
+      ///update operation
+      this.handleCreate();
+    }
+  };
+  handleUpdate = async () => {
+    var response = await axios.put(
+      `https://62152ebccdb9d09717b0e6f5.mockapi.io/users/${this.state.id}`,
+      {
+        name: this.state.name,
+        age: this.state.age,
+        email: this.state.email,
+      }
+    );
+    var user = [...this.state.user];
+    var index = user.findIndex((user) => user.id === this.state.id);
+    user[index] = response.data;
+    this.setState({ user });
+    console.log(this.state.user);
+  };
+
+  handleCreate = async () => {
     console.log(this.state);
     var response = await axios.post(
       'https://62152ebccdb9d09717b0e6f5.mockapi.io/users',
@@ -47,9 +73,15 @@ class CrudComponent extends React.Component {
   };
 
   onPopulateData = (id) => {
-    var selectedData = this.state.user.filter((user) => use.id === id);
+    var selectedData = this.state.user.filter((user) => user.id === id[0]);
     console.log(selectedData);
     console.log(id);
+    this.setState({
+      id: selectedData.id,
+      name: selectedData.name,
+      age: selectedData.age,
+      email: selectedData.email,
+    });
   };
 
   render() {
@@ -116,10 +148,11 @@ class CrudComponent extends React.Component {
                 <td>{data.age}</td>
                 <td>{data.email}</td>
                 <td>
-                  <button onSubmit={() => this.onPopulateData(data.id)}>
+                  <button onClick={() => this.onPopulateData(data.id)}>
                     Update
                   </button>
-                  &nbsp; <button>Delete</button>
+                  &nbsp;
+                  <button>Delete</button>
                 </td>
               </tr>
             ))}
