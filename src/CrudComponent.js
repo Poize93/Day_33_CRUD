@@ -22,9 +22,10 @@ class CrudComponent extends React.Component {
   }
 
   handleSubmit = (e) => {
+    console.log('HIiii');
     e.preventDefault();
     console.log(this.state);
-    console.log('HIiii');
+
     // var response = await axios.post(
     //   'https://62152ebccdb9d09717b0e6f5.mockapi.io/users',
     //   {
