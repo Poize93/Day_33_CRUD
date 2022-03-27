@@ -24,6 +24,15 @@ class CrudComponent extends React.Component {
   handleSubmit = (e) => {
     e.preventDefault();
     console.log(this.state);
+    var response = await axios.post(
+      'https://62152ebccdb9d09717b0e6f5.mockapi.io/users',
+      {
+        name: this.state.name,
+        age: this.state.age,
+        email: this.state.email,
+      }
+    );
+    console.log(response.data);
   };
 
   render() {
