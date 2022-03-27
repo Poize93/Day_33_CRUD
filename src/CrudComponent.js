@@ -48,10 +48,11 @@ class CrudComponent extends React.Component {
         email: this.state.email,
       }
     );
+    var index = user.findIndex((user) => user.id === response.data.id);
     var user = [...this.state.user];
-    var index = user.findIndex((user) => user.id === this.state.id);
+
     user[index] = response.data;
-    this.setState({ user });
+    this.setState({ user, name: '', email: '', age: '', id: '' });
     console.log(this.state.user);
   };
 
@@ -73,7 +74,7 @@ class CrudComponent extends React.Component {
   };
 
   onPopulateData = (id) => {
-    var selectedData = this.state.user.filter((user) => user.id === id[0]);
+    var selectedData = this.state.user.filter((user) => user.id === id);
     console.log(selectedData);
     console.log(id);
     this.setState({
@@ -84,6 +85,14 @@ class CrudComponent extends React.Component {
     });
   };
 
+  handleDelete = async (id) => {
+    var response = await axios.delete(
+      `https://62152ebccdb9d09717b0e6f5.mockapi.io/users/${id}`
+    );
+    var user = this.state.user.filter((user) => user.id !== id);
+    console.log(user);
+    this.setState({ user });
+  };
   render() {
     return (
       <>
@@ -152,7 +161,9 @@ class CrudComponent extends React.Component {
                     Update
                   </button>
                   &nbsp;
-                  <button>Delete</button>
+                  <button onClick={() => this.handleDelete(data.id)}>
+                    Delete
+                  </button>
                 </td>
               </tr>
             ))}
